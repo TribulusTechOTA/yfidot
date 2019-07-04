@@ -1,11 +1,6 @@
 fileVer='201907041350'
 print('main ver ' + fileVer)
-try:
-    from ota_updater import OTAUpdater
-except Exception as ex:
-    tx = str(ex)
-    print (tx)
-
+from main.ota_updater import OTAUpdater
 #from ota_update.main.ota_updater import OTAUpdater
 
 

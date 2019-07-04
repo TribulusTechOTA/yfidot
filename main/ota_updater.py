@@ -6,7 +6,7 @@ import usocket
 import os
 import gc
 import machine
-from ota_http import HttpClient, Response
+from main.ota_http import HttpClient, Response
 
 
 class OTAUpdater:
