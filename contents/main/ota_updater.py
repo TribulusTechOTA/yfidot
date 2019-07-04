@@ -45,23 +45,24 @@ class OTAUpdater:
                 versionfile.close()
 
     def download_and_install_update_if_available(self, ssid, password):
-        if 'next' in os.listdir(self.module):
-            if '.version_on_reboot' in os.listdir(self.modulepath('next')):
-                latest_version = self.get_version(self.modulepath('next'), '.version_on_reboot')
-                print('New update found: ', latest_version)
-                self._download_and_install_update(latest_version, ssid, password)
-        else:
-            print('No new updates found...')
+
+       if 'next' in os.listdir(self.module):
+           if 'version_on_reboot' in os.listdir(self.modulepath('next')):
+               latest_version = self.get_version(self.modulepath('next'), 'version_on_reboot')
+               print('New update found: ', latest_version)
+               self._download_and_install_update(latest_version, ssid, password)
+       else:
+           print('No new updates found...')
 
     def _download_and_install_update(self, latest_version, ssid, password):
         OTAUpdater.using_network(ssid, password)
 
         self.download_all_files(self.github_repo + '/contents/' + self.main_dir, latest_version)
-        self.rmtree(self.modulepath(self.main_dir))
-        os.rename(self.modulepath('next/.version_on_reboot'), self.modulepath('next/.version'))
-        os.rename(self.modulepath('next'), self.modulepath(self.main_dir))
+        #self.rmtree(self.modulepath(self.main_dir))
+        #os.rename(self.modulepath('next/version_on_reboot'), self.modulepath('next/version'))
+        #os.rename(self.modulepath('next'), self.modulepath(self.main_dir))
         print('Update installed (', latest_version, '), will reboot now')
-        machine.reset()
+        #machine.reset()
 
     def apply_pending_updates_if_available(self):
         if 'next' in os.listdir(self.module):
@@ -120,7 +121,9 @@ class OTAUpdater:
         return version
 
     def download_all_files(self, root_url, version):
+        print(root_url)
         file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
+        print(file_list)
         for file in file_list.json():
             if file['type'] == 'file':
                 download_url = file['download_url']
