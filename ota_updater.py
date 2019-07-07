@@ -122,7 +122,8 @@ class OTAUpdater:
 
     def download_all_files(self, root_url, version):
         print(root_url)
-        file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
+        #file_list = self.http_client.get(root_url + '?ref=refs/tags/' + version)
+        file_list = self.http_client.get(root_url + '?ref=' + version)
         print(file_list)
         for file in file_list.json():
             if file['type'] == 'file':
